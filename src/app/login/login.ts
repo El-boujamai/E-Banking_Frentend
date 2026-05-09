@@ -1,37 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from "../services/auth";
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from "../services/auth.service";
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [ReactiveFormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
 })
 export class Login implements OnInit {
   formLogin!: FormGroup;
-  constructor(private fb: FormBuilder , private authService : AuthService , private router : Router) {}
+  errorMessage: string | null = null;
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+
   ngOnInit(): void {
     this.formLogin = this.fb.group({
-      username: this.fb.control(''),
-      password: this.fb.control(''),
+      username: [''], // Utilisation d'un tableau pour une meilleure pratique
+      password: [''],
     });
   }
 
-  protected handleLogin() {
-    let username = this.formLogin.value.username;
-    let password = this.formLogin.value.password;
-    this.authService.login(username,password).subscribe({
+  public handleLogin() {
+    this.errorMessage = null;
+    const username = this.formLogin.value.username;
+    const password = this.formLogin.value.password;
+    this.authService.login(username, password).subscribe({
       next: data => {
         this.authService.loadProfile(data);
-        this.router.navigateByUrl("/admin")
+        void this.router.navigateByUrl("/admin");
       },
-      error: err=>{
-        console.log(err);
+      error: err => {
+        this.errorMessage = "Nom d'utilisateur ou mot de passe incorrect.";
+        console.error(err);
       }
-    })
-    console.log(this.formLogin.value);
+    });
   }
 }

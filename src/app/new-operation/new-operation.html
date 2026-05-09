@@ -1,0 +1,56 @@
+<div class="container mt-2">
+  <ng-container>
+
+    <div class="card">
+
+      <div class="card-header">Operations</div>
+      <div class="card-body">
+        <form [formGroup]="newOperationGroup" (ngSubmit)="handleSaveOperation()">
+          <div >
+            <input class="form-check-input m-1"
+                   type="radio"
+                   formControlName="type"
+                   value="CREDIT"
+                   id="credit">
+
+            <label class="form-check-label me-3" for="credit">
+              CREDIT
+            </label>
+            <input class="form-check-input m-1"
+                   type="radio"
+                   formControlName="type"
+                   value="DEBIT"
+                   id="debit">
+
+            <label class="form-check-label me-2" for="credit">
+              DEBIT
+            </label>
+            <input class="form-check-input m-1"
+                   type="radio"
+                   formControlName="type"
+                   value="TRANSFER"
+                   id="transfer">
+
+            <label class="form-check-label me-3" for="credit">
+              TRANSFER
+            </label>
+            <div>
+              <label class="">Amount :</label>
+              <input type="text" formControlName="amount" class="form-control" >
+            </div>
+            <div>
+              <label class="">Description : </label>
+              <input type="text" formControlName="description" class="form-control">
+            </div>
+
+          </div>
+          <button  class="btn btn-danger">Save Operation</button>
+        </form>
+
+      </div>
+    </div>
+  </ng-container>
+
+
+
+</div>
